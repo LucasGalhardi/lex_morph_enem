@@ -123,5 +123,26 @@ for e in dword_list_mais_1:
         dword_list_1.append(o)
 dword_list = dword_list_1
 
-filehandler = open('arq.objs', 'wb')
-pickle.dump(dword_list, filehandler)
+# filehandler = open('arq.objs', 'wb')
+# pickle.dump(dword_list, filehandler)
+
+lemmas_list = list(set(lemmatized_words_n))
+
+lemmas_and_their_tokens = []
+for l in lemmas_list:
+    o = dict()
+    o['lemma'] = l
+    o['tokens'] = set()
+    lemmas_and_their_tokens.append(o)
+
+for o in lemmas_and_their_tokens:
+    for ind, lw in enumerate(lemmatized_words_n):
+        if o['lemma'] == lw:
+            o['tokens'].add((tokens[ind], frequency_dist[tokens[ind]]))
+
+for lt in lemmas_and_their_tokens:
+    if len(lt['tokens']) > 1:
+        print(lt)
+
+fileh = open('lista_bases.objs', 'wb')
+pickle.dump(lemmas_and_their_tokens, fileh)
