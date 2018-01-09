@@ -2,6 +2,8 @@ import pickle
 import json
 import nltk
 import operator
+import string
+from colorama import Fore, Style
 
 tags_dict = {
     'ADP': 'Adposição',
@@ -91,19 +93,36 @@ while True:
     print("1 - Lista de Bases")
     print("2 - Lista de Palavras")
     print("3 - Sair")
-    op = int(input("Escolha: "))
-    if op == 1:
+    op = input("Escolha: ")
+    if op == '1':
         print("\n" * 12, end='')
         while True:
             print("1 - Ver lista das palavras bases")
-            print("2 - Consulta palavra")
-            print("3 - Voltar")
-            op2 = int(input("Escolha: "))
-            if op2 == 1:
+            print("2 - Ver lista das palavras bases que começam com '.'")
+            print("3 - Consulta palavra")
+            print("4 - Voltar")
+            op2 = input("Escolha: ")
+            if op2 == '1':
+                print(Fore.BLUE)
                 for i in lemmas_and_their_tokens:
                     print(i['lemma'])
-            elif op2 == 2:
+                print(Style.RESET_ALL)
+            if op2 == '2':
+                letter = input("Letra: ")
+                if letter not in string.ascii_letters:
+                    print(Fore.RED)
+                    print("Digite apenas 1 letra")
+                    print(Style.RESET_ALL)
+                    continue
+                else:
+                    print(Fore.BLUE)
+                    for i in lemmas_and_their_tokens:
+                        if i['lemma'].startswith(letter):
+                            print(i['lemma'])
+                    print(Style.RESET_ALL)
+            elif op2 == '3':
                 palavra = input("Palavra: ")
+                print(Fore.BLUE)
                 found = False
                 tks = {}
                 for ind, i in enumerate(lemmas_and_their_tokens):
@@ -112,27 +131,52 @@ while True:
                         found = True
                         break
                 if found:
-                    print("A base " + palavra + " aparece nas seguinte formas: ")
-                    for (t, f) in tks:
-                        print(t + " aparece " + str(f) + " vezes no texto.")
+                    print("A base " + Fore.GREEN +
+                          palavra + Fore.BLUE + " aparece nas seguinte formas: ")
+                    for ind, (t, f) in enumerate(tks, start=1):
+                        print("     " + str(ind) + ". " + Fore.GREEN +
+                              t + Fore.BLUE + " aparece " +
+                              Fore.GREEN + str(f) + Fore.BLUE + " vezes no texto.")
                 else:
+                    print(Fore.RED)
                     print("Palavra não existente")
-            elif op2 == 3:
+                    print(Style.RESET_ALL)
+                print(Style.RESET_ALL)
+            elif op2 == '4':
                 print("\n" * 12, end='')
                 break
             else:
+                print(Fore.RED)
                 print("Escolha um número válido")
-    elif op == 2:
+                print(Style.RESET_ALL)
+    elif op == '2':
         print("\n" * 12, end='')
         while True:
             print("1 - Ver lista das palavras")
-            print("2 - Consulta palavra")
-            print("3 - Voltar")
-            op3 = int(input("Escolha: "))
-            if op3 == 1:
+            print("2 - Ver lista das palavras que começam com '.'")
+            print("3 - Consulta palavra")
+            print("4 - Voltar")
+            op3 = input("Escolha: ")
+            if op3 == '1':
+                print(Fore.BLUE)
                 for dw in dword_list:
                     print(dw.word)
-            elif op3 == 2:
+                print(Style.RESET_ALL)
+                continue
+            if op3 == '2':
+                letter = input("Letra: ")
+                if letter not in string.ascii_letters:
+                    print(Fore.RED)
+                    print("Digite apenas 1 letra")
+                    print(Style.RESET_ALL)
+                else:
+                    print(Fore.BLUE)
+                    for dw in dword_list:
+                        if dw.word.startswith(letter):
+                            print(dw.word)
+                    print(Style.RESET_ALL)
+                continue
+            elif op3 == '3':
                 palavra = input("Palavra: ")
                 found = False
                 word = DWord()
@@ -142,55 +186,77 @@ while True:
                         found = True
                         break
                 if found:
-                    print("Palavra: " + word.word)
-                    print("Significado: " + word.meaning)
-                    print("Frequência: " + str(word.freq))
+                    print(Fore.BLUE)
+                    print("ID: " + Fore.GREEN + str(word.id) + Fore.BLUE)
+                    print("Palavra: " + Fore.GREEN + word.word + Fore.BLUE)
+                    print("Significado: " + Fore.GREEN + word.meaning + Fore.BLUE)
                     tag = word.pos_tag.pop()
-                    print("Classe gramatical: " + tags_dict[tag])
+                    print("Classe gramatical: " + Fore.GREEN + tags_dict[tag] + Fore.BLUE)
                     word.pos_tag.add(tag)
-                    print("Morfemas: ")
-                    for m in word.morphemes:
-                        print("     " + m)
+                    print("Frequência: " + Fore.GREEN + str(word.freq) + Fore.BLUE)
                     print("Ocorrências no texto: ")
+                    print(Fore.GREEN)
                     for ind, oc in enumerate(word.occur_list, start=1):
                         print("     " + str(ind) + ". " + ' '.join(tokens[oc - 5:oc + 6]))
-                    print("Raiz: " + word.root)
-                    print("Sufixo: " + word.suffix)
-                    print("Lemmas: ")
+                    print(Fore.BLUE)
+                    print("Lemma: ")
+                    print(Fore.GREEN)
                     for l in word.lemmas:
                         print("     " + l)
+                    print(Fore.BLUE)
+                    print("Raiz: " + Fore.GREEN + word.root + Fore.BLUE)
+                    print("Sufixo: " + Fore.GREEN + word.suffix + Fore.BLUE)
+                    print("Morfemas: ")
+                    print(Fore.GREEN)
+                    for m in word.morphemes:
+                        print("     " + m)
+                    print(Fore.BLUE)
                     if tag == 'NOUN':
-                        print("Número: " + numero_dict[word.numero])
-                        print("Gênero: " + genero_dict[word.genero])
-                        print("Grau: " + grau_dict[word.grau])
+                        print("Número: " + Fore.GREEN + numero_dict[word.numero] + Fore.BLUE)
+                        print("Gênero: " + Fore.GREEN + genero_dict[word.genero] + Fore.BLUE)
+                        print("Grau: " + Fore.GREEN + grau_dict[word.grau] + Fore.BLUE)
                     elif tag == 'ADJ':
-                        print("Número: " + numero_dict[word.numero])
-                        print("Gênero: " + genero_dict[word.genero])
-                        print("Grau: " + grau_dict[word.grau])
+                        print("Número: " + Fore.GREEN + numero_dict[word.numero] + Fore.BLUE)
+                        print("Gênero: " + Fore.GREEN + genero_dict[word.genero] + Fore.BLUE)
+                        print("Grau: " + Fore.GREEN + grau_dict[word.grau] + Fore.BLUE)
                     elif tag == 'VERB':
+                        print(Fore.GREEN)
                         if word.pessoa == 'i' and word.numero == 'i' and word.tempo == 'i':
                             print("Verbo no infinitivo")
+                            print(Fore.BLUE)
                         elif word.pessoa == 'g' and word.numero == 'g' and word.tempo == 'g':
                             print("Verbo no gerúndio")
+                            print(Fore.BLUE)
                         elif word.pessoa == 'p' and word.numero == 'p' and word.tempo == 'p':
                             print("Verbo no particípio")
+                            print(Fore.BLUE)
                         else:
-                            print("Pessoa: " + word.pessoa + "ª")
-                            print("Número: " + numero_dict[word.numero])
-                            print("Tempo: " + tempo_dict[word.tempo])
+                            print(Fore.BLUE)
+                            print("Pessoa: " + Fore.GREEN + word.pessoa + "ª" + Fore.BLUE)
+                            print("Número: " + Fore.GREEN + numero_dict.get(word.numero, '') + Fore.BLUE)
+                            print("Tempo: " + Fore.GREEN + tempo_dict.get(word.tempo, '') + Fore.BLUE)
                     elif tag == 'PRON':
-                        print("Número: " + numero_dict[word.numero])
-                        print("Pessoa: " + word.pessoa + "ª")
-                        print("Gênero: " + genero_dict[word.genero])
+                        print("Número: " + Fore.GREEN + numero_dict[word.numero] + Fore.BLUE)
+                        print("Pessoa: " + Fore.GREEN + word.pessoa + "ª" + Fore.BLUE)
+                        print("Gênero: " + Fore.GREEN + genero_dict[word.genero] + Fore.BLUE)
+                    print(Style.RESET_ALL)
+                    continue
                 else:
+                    print(Fore.RED)
                     print("Palavra não existente")
-            elif op3 == 3:
+                    print(Style.RESET_ALL)
+                    continue
+            elif op3 == '4':
                 print("\n" * 12, end='')
                 break
             else:
+                print(Fore.RED)
                 print("Escolha um número válido")
-    elif op == 3:
+                print(Style.RESET_ALL)
+    elif op == '3':
         print("\n" * 12, end='')
         break
     else:
+        print(Fore.RED)
         print("Escolha um número válido")
+        print(Style.RESET_ALL)
