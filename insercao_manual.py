@@ -71,13 +71,13 @@ while var:
         o.genero = input("Gênero? (m, f, u)")
         o.grau = input("Grau? (b, c, s)")
     elif popped == 'VERB':
-        o.genero = input("Pessoa? (1, 2, 3, 2/3)")
+        o.pessoa = input("Pessoa? (1, 2, 3, 2/3)")
         o.numero = input("Numero? (s, p)")
-        o.grau = input("Tempo? (pre, pass, f)")
+        o.tempo = input("Tempo? (pre, pass, f)")
     elif popped == 'PRON':
         o.numero = input("Numero? (s, p)")
-        o.genero = input("Pessoa? (1, 2, 3, 2/3)")
-        o.grau = input("Gênero? (m, f)")
+        o.pessoa = input("Pessoa? (1, 2, 3, 2/3)")
+        o.genero = input("Gênero? (m, f)")
     else:
         o.pos_tag.add(popped)
         dword_list[iddd] = o

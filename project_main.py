@@ -140,9 +140,5 @@ for o in lemmas_and_their_tokens:
         if o['lemma'] == lw:
             o['tokens'].add((tokens[ind], frequency_dist[tokens[ind]]))
 
-for lt in lemmas_and_their_tokens:
-    if len(lt['tokens']) > 1:
-        print(lt)
-
 fileh = open('lista_bases.objs', 'wb')
 pickle.dump(lemmas_and_their_tokens, fileh)
