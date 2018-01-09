@@ -95,8 +95,5 @@ while var:
     print("\n" * 10, end='')
     iddd = iddd + 1
 
-
-# file = open('arq.objs', 'wb')
-# pickle.dump(dword_list, file)
-
-
+file = open('arq.objs', 'wb')
+pickle.dump(dword_list, file)
