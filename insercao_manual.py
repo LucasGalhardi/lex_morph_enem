@@ -95,5 +95,7 @@ while var:
     print("\n" * 10, end='')
     iddd = iddd + 1
 
+print("Na próxima comece pelo " + str(iddd))
+
 file = open('arq.objs', 'wb')
 pickle.dump(dword_list, file)

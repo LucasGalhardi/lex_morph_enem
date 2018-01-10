@@ -16,7 +16,8 @@ tags_dict = {
     'PRT': 'Particle',
     'PRON': 'Pronome',
     'ADJ': 'Adjetivo',
-    'CONJ': 'Conjunção'
+    'CONJ': 'Conjunção',
+    'CNT': 'Contração'
 }
 
 numero_dict = {
@@ -107,6 +108,7 @@ while True:
                 for i in lemmas_and_their_tokens:
                     print(i['lemma'])
                 print(Style.RESET_ALL)
+                continue
             if op2 == '2':
                 letter = input("Letra: ")
                 if letter not in string.ascii_letters:
@@ -120,6 +122,7 @@ while True:
                         if i['lemma'].startswith(letter):
                             print(i['lemma'])
                     print(Style.RESET_ALL)
+                continue
             elif op2 == '3':
                 palavra = input("Palavra: ")
                 print(Fore.BLUE)
@@ -136,18 +139,19 @@ while True:
                     for ind, (t, f) in enumerate(tks, start=1):
                         print("     " + str(ind) + ". " + Fore.GREEN +
                               t + Fore.BLUE + " aparece " +
-                              Fore.GREEN + str(f) + Fore.BLUE + " vezes no texto.")
+                              Fore.GREEN + str(f) + Fore.BLUE + " vez(es) no texto.")
                 else:
                     print(Fore.RED)
                     print("Palavra não existente")
                     print(Style.RESET_ALL)
                 print(Style.RESET_ALL)
+                continue
             elif op2 == '4':
                 print("\n" * 12, end='')
                 break
             else:
                 print(Fore.RED)
-                print("Escolha um número válido")
+                print("Escolha um número váliddo")
                 print(Style.RESET_ALL)
     elif op == '2':
         print("\n" * 12, end='')
@@ -179,68 +183,70 @@ while True:
             elif op3 == '3':
                 palavra = input("Palavra: ")
                 found = False
-                word = DWord()
+                found_words = []
                 for dw in dword_list:
                     if dw.word == palavra:
-                        word = dw
+                        found_words.append(dw)
                         found = True
-                        break
                 if found:
-                    print(Fore.BLUE)
-                    print("ID: " + Fore.GREEN + str(word.id) + Fore.BLUE)
-                    print("Palavra: " + Fore.GREEN + word.word + Fore.BLUE)
-                    print("Significado: " + Fore.GREEN + word.meaning + Fore.BLUE)
-                    tag = word.pos_tag.pop()
-                    print("Classe gramatical: " + Fore.GREEN + tags_dict[tag] + Fore.BLUE)
-                    word.pos_tag.add(tag)
-                    print("Frequência: " + Fore.GREEN + str(word.freq) + Fore.BLUE)
-                    print("Ocorrências no texto: ")
-                    print(Fore.GREEN)
-                    for ind, oc in enumerate(word.occur_list, start=1):
-                        print("     " + str(ind) + ". " + ' '.join(tokens[oc - 5:oc + 6]))
-                    print(Fore.BLUE)
-                    print("Lemma: ")
-                    print(Fore.GREEN)
-                    for l in word.lemmas:
-                        print("     " + l)
-                    print(Fore.BLUE)
-                    print("Raiz: " + Fore.GREEN + word.root + Fore.BLUE)
-                    print("Sufixo: " + Fore.GREEN + word.suffix + Fore.BLUE)
-                    print("Morfemas: ")
-                    print(Fore.GREEN)
-                    for m in word.morphemes:
-                        print("     " + m)
-                    print(Fore.BLUE)
-                    if tag == 'NOUN':
-                        print("Número: " + Fore.GREEN + numero_dict[word.numero] + Fore.BLUE)
-                        print("Gênero: " + Fore.GREEN + genero_dict[word.genero] + Fore.BLUE)
-                        print("Grau: " + Fore.GREEN + grau_dict[word.grau] + Fore.BLUE)
-                    elif tag == 'ADJ':
-                        print("Número: " + Fore.GREEN + numero_dict[word.numero] + Fore.BLUE)
-                        print("Gênero: " + Fore.GREEN + genero_dict[word.genero] + Fore.BLUE)
-                        print("Grau: " + Fore.GREEN + grau_dict[word.grau] + Fore.BLUE)
-                    elif tag == 'VERB':
+                    for word in found_words:
+                        print("----------------------------------------------------------------")
+                        print(Fore.BLUE)
+                        print("ID: " + Fore.GREEN + str(word.id) + Fore.BLUE)
+                        print("Palavra: " + Fore.GREEN + word.word + Fore.BLUE)
+                        print("Significado: " + Fore.GREEN + word.meaning + Fore.BLUE)
+                        tag = word.pos_tag.pop()
+                        print("Classe gramatical: " + Fore.GREEN + tags_dict[tag] + Fore.BLUE)
+                        word.pos_tag.add(tag)
+                        print("Frequência: " + Fore.GREEN + str(word.freq) + Fore.BLUE)
+                        print("Ocorrências no texto: ")
                         print(Fore.GREEN)
-                        if word.pessoa == 'i' and word.numero == 'i' and word.tempo == 'i':
-                            print("Verbo no infinitivo")
-                            print(Fore.BLUE)
-                        elif word.pessoa == 'g' and word.numero == 'g' and word.tempo == 'g':
-                            print("Verbo no gerúndio")
-                            print(Fore.BLUE)
-                        elif word.pessoa == 'p' and word.numero == 'p' and word.tempo == 'p':
-                            print("Verbo no particípio")
-                            print(Fore.BLUE)
-                        else:
-                            print(Fore.BLUE)
+                        for ind, oc in enumerate(word.occur_list, start=1):
+                            print("     " + str(ind) + ". " + ' '.join(tokens[oc - 5:oc + 6]))
+                        print(Fore.BLUE)
+                        print("Lemma: ")
+                        print(Fore.GREEN)
+                        for l in word.lemmas:
+                            print("     " + l)
+                        print(Fore.BLUE)
+                        print("Raiz: " + Fore.GREEN + word.root + Fore.BLUE)
+                        print("Sufixo: " + Fore.GREEN + word.suffix + Fore.BLUE)
+                        print("Morfemas: ")
+                        print(Fore.GREEN)
+                        for m in word.morphemes:
+                            print("     " + m)
+                        print(Fore.BLUE)
+                        if tag == 'NOUN':
+                            print("Número: " + Fore.GREEN + numero_dict[word.numero] + Fore.BLUE)
+                            print("Gênero: " + Fore.GREEN + genero_dict[word.genero] + Fore.BLUE)
+                            print("Grau: " + Fore.GREEN + grau_dict[word.grau] + Fore.BLUE)
+                        elif tag == 'ADJ':
+                            print("Número: " + Fore.GREEN + numero_dict[word.numero] + Fore.BLUE)
+                            print("Gênero: " + Fore.GREEN + genero_dict[word.genero] + Fore.BLUE)
+                            print("Grau: " + Fore.GREEN + grau_dict[word.grau] + Fore.BLUE)
+                        elif tag == 'VERB':
+                            print(Fore.GREEN)
+                            if word.pessoa == 'i' and word.numero == 'i' and word.tempo == 'i':
+                                print("Verbo no infinitivo")
+                                print(Fore.BLUE)
+                            elif word.pessoa == 'g' and word.numero == 'g' and word.tempo == 'g':
+                                print("Verbo no gerúndio")
+                                print(Fore.BLUE)
+                            elif word.pessoa == 'p' and word.numero == 'p' and word.tempo == 'p':
+                                print("Verbo no particípio")
+                                print(Fore.BLUE)
+                            else:
+                                print(Fore.BLUE)
+                                print("Pessoa: " + Fore.GREEN + word.pessoa + "ª" + Fore.BLUE)
+                                print("Número: " + Fore.GREEN + numero_dict.get(word.numero, '') + Fore.BLUE)
+                                print("Tempo: " + Fore.GREEN + tempo_dict.get(word.tempo, '') + Fore.BLUE)
+                        elif tag == 'PRON':
+                            print("Número: " + Fore.GREEN + numero_dict[word.numero] + Fore.BLUE)
                             print("Pessoa: " + Fore.GREEN + word.pessoa + "ª" + Fore.BLUE)
-                            print("Número: " + Fore.GREEN + numero_dict.get(word.numero, '') + Fore.BLUE)
-                            print("Tempo: " + Fore.GREEN + tempo_dict.get(word.tempo, '') + Fore.BLUE)
-                    elif tag == 'PRON':
-                        print("Número: " + Fore.GREEN + numero_dict[word.numero] + Fore.BLUE)
-                        print("Pessoa: " + Fore.GREEN + word.pessoa + "ª" + Fore.BLUE)
-                        print("Gênero: " + Fore.GREEN + genero_dict[word.genero] + Fore.BLUE)
-                    print(Style.RESET_ALL)
-                    continue
+                            print("Gênero: " + Fore.GREEN + genero_dict[word.genero] + Fore.BLUE)
+                        print(Style.RESET_ALL)
+                        print("----------------------------------------------------------------")
+                        continue
                 else:
                     print(Fore.RED)
                     print("Palavra não existente")
