@@ -1,2 +1,3 @@
 esbarrando 187
 requerer 211
+afetando 334
