@@ -2,3 +2,4 @@ esbarrando 187
 requerer 211
 afetando 334
 implantando 399
+policial 483
