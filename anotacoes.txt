@@ -3,3 +3,4 @@ requerer 211
 afetando 334
 implantando 399
 policial 483
+cometem 646
