@@ -4,3 +4,5 @@ afetando 334
 implantando 399
 policial 483
 cometem 646
+privilegiando 707
+ferindo 764
