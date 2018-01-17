@@ -6,3 +6,4 @@ policial 483
 cometem 646
 privilegiando 707
 ferindo 764
+conciente 861
