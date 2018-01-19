@@ -10,3 +10,7 @@ conciente 861
 atual 893
 viole 901
 prejudicando 923
+desconsiderando 997
+especificando 1016
+declaração 1032
+colaborando 1053
