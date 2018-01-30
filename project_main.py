@@ -1,6 +1,5 @@
 import json
 import nltk
-import pickle
 from pt_tagger import pt_tagger
 from polyglot.text import Text
 from lemmatizer import lemmatizer
@@ -115,30 +114,45 @@ for t in unique_tokens:
 
 dword_list_1 = [x for x in dword_list if len(x.pos_tag) <= 1]
 dword_list_mais_1 = [x for x in dword_list if len(x.pos_tag) > 1]
-for e in dword_list_mais_1:
-    for t in e.pos_tag:
-        o = e
-        o.pos_tag = set()
-        o.pos_tag.add(t)
-        dword_list_1.append(o)
-dword_list = dword_list_1
+# FORAM FEITAS ALGUMAS CORREÇÕES DEPOIS DA PRIMEIRA VEZ Q O CÓDIGO FOI FEITO
+# ABAIXO
+# new_list = []
+# for e in dword_list_mais_1:
+#     for t in e.pos_tag:
+#         o = copy.deepcopy(e)
+#         o.pos_tag = set()
+#         o.pos_tag.add(t)
+#         new_list.append(o)
+# dword_list = dword_list_1
+#
+# for e in new_list:
+#     e.occur_list = []
+#     pos = 0
+#     popped = e.pos_tag.pop()
+#     for (w, postag) in tagged_words:
+#         if e.word == w and popped == postag:
+#             e.occur_list.append(pos)
+#         pos = pos + 1
+#     e.pos_tag.add(popped)
+#     e.freq = len(e.occur_list)
+#
+#
+# filehandler = open('arq2.objs', 'wb')
+# pickle.dump(new_list, filehandler)
 
-# filehandler = open('arq.objs', 'wb')
-# pickle.dump(dword_list, filehandler)
-
-lemmas_list = list(set(lemmatized_words_n))
-
-lemmas_and_their_tokens = []
-for l in lemmas_list:
-    o = dict()
-    o['lemma'] = l
-    o['tokens'] = set()
-    lemmas_and_their_tokens.append(o)
-
-for o in lemmas_and_their_tokens:
-    for ind, lw in enumerate(lemmatized_words_n):
-        if o['lemma'] == lw:
-            o['tokens'].add((tokens[ind], frequency_dist[tokens[ind]]))
-
-fileh = open('lista_bases.objs', 'wb')
-pickle.dump(lemmas_and_their_tokens, fileh)
+# lemmas_list = list(set(lemmatized_words_n))
+#
+# lemmas_and_their_tokens = []
+# for l in lemmas_list:
+#     o = dict()
+#     o['lemma'] = l
+#     o['tokens'] = set()
+#     lemmas_and_their_tokens.append(o)
+#
+# for o in lemmas_and_their_tokens:
+#     for ind, lw in enumerate(lemmatized_words_n):
+#         if o['lemma'] == lw:
+#             o['tokens'].add((tokens[ind], frequency_dist[tokens[ind]]))
+#
+# fileh = open('lista_bases.objs', 'wb')
+# pickle.dump(lemmas_and_their_tokens, fileh)

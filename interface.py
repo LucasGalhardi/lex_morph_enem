@@ -84,10 +84,18 @@ tokens = [word.lower() for word in initial_tokens]
 file = open('arq.objs', 'rb')
 dword_list = pickle.load(file)
 
+file = open('arq2.objs', 'rb')
+dword_list2 = pickle.load(file)
+
+words_in_list2 = set([dw.word for dw in dword_list2])
+dword_list3 = [dw for dw in dword_list if dw.word not in words_in_list2]
+
+dword_list3.extend(dword_list2)
+
 fileh = open('lista_bases.objs', 'rb')
 lemmas_and_their_tokens = pickle.load(fileh)
 
-dword_list.sort(key=operator.attrgetter('word'))
+dword_list3.sort(key=operator.attrgetter('word'))
 lemmas_and_their_tokens.sort(key=operator.itemgetter('lemma'))
 
 while True:
@@ -163,7 +171,7 @@ while True:
             op3 = input("Escolha: ")
             if op3 == '1':
                 print(Fore.BLUE)
-                for dw in dword_list:
+                for dw in dword_list3:
                     print(dw.word)
                 print(Style.RESET_ALL)
                 continue
@@ -175,7 +183,7 @@ while True:
                     print(Style.RESET_ALL)
                 else:
                     print(Fore.BLUE)
-                    for dw in dword_list:
+                    for dw in dword_list3:
                         if dw.word.startswith(letter):
                             print(dw.word)
                     print(Style.RESET_ALL)
@@ -184,7 +192,7 @@ while True:
                 palavra = input("Palavra: ")
                 found = False
                 found_words = []
-                for dw in dword_list:
+                for dw in dword_list3:
                     if dw.word == palavra:
                         found_words.append(dw)
                         found = True
@@ -217,11 +225,11 @@ while True:
                             print("     " + m)
                         print(Fore.BLUE)
                         if tag == 'NOUN':
-                            print("Número: " + Fore.GREEN + numero_dict[word.numero] + Fore.BLUE)
-                            print("Gênero: " + Fore.GREEN + genero_dict[word.genero] + Fore.BLUE)
-                            print("Grau: " + Fore.GREEN + grau_dict[word.grau] + Fore.BLUE)
+                            print("Número: " + Fore.GREEN + numero_dict.get(word.numero, '') + Fore.BLUE)
+                            print("Gênero: " + Fore.GREEN + genero_dict.get(word.genero, '') + Fore.BLUE)
+                            print("Grau: " + Fore.GREEN + grau_dict.get(word.grau, '') + Fore.BLUE)
                         elif tag == 'ADJ':
-                            print("Número: " + Fore.GREEN + numero_dict[word.numero] + Fore.BLUE)
+                            print("Número: " + Fore.GREEN + numero_dict.get(word.numero, '') + Fore.BLUE)
                             print("Gênero: " + Fore.GREEN + genero_dict[word.genero] + Fore.BLUE)
                             print("Grau: " + Fore.GREEN + grau_dict[word.grau] + Fore.BLUE)
                         elif tag == 'VERB':
