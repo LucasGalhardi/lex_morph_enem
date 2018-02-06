@@ -6,7 +6,7 @@ import string
 from colorama import Fore, Style
 
 tags_dict = {
-    'ADP': 'Adposição',
+    'ADP': 'Adposição (Preposição)',
     '.': 'Pontuação',
     'ADV': 'Advérbio',
     'DET': 'Determinante',
@@ -114,7 +114,7 @@ while True:
             if op2 == '1':
                 print(Fore.BLUE)
                 for i in lemmas_and_their_tokens:
-                    print(i['lemma'])
+                    print(i.get('lemma', ''))
                 print(Style.RESET_ALL)
                 continue
             if op2 == '2':
@@ -127,8 +127,10 @@ while True:
                 else:
                     print(Fore.BLUE)
                     for i in lemmas_and_their_tokens:
-                        if i['lemma'].startswith(letter):
-                            print(i['lemma'])
+                        i_lemma = i.get('lemma', '')
+                        if i_lemma != '':
+                            if i['lemma'].startswith(letter):
+                                print(i['lemma'])
                     print(Style.RESET_ALL)
                 continue
             elif op2 == '3':
@@ -137,7 +139,8 @@ while True:
                 found = False
                 tks = {}
                 for ind, i in enumerate(lemmas_and_their_tokens):
-                    if i['lemma'] == palavra:
+                    i_lemma = i.get('lemma', '')
+                    if i_lemma == palavra:
                         tks = lemmas_and_their_tokens[ind]['tokens']
                         found = True
                         break
@@ -204,13 +207,15 @@ while True:
                         print("Palavra: " + Fore.GREEN + word.word + Fore.BLUE)
                         print("Significado: " + Fore.GREEN + word.meaning + Fore.BLUE)
                         tag = word.pos_tag.pop()
-                        print("Classe gramatical: " + Fore.GREEN + tags_dict[tag] + Fore.BLUE)
+                        print("Classe gramatical: " + Fore.GREEN + tags_dict.get(tag, '') + Fore.BLUE)
                         word.pos_tag.add(tag)
                         print("Frequência: " + Fore.GREEN + str(word.freq) + Fore.BLUE)
                         print("Ocorrências no texto: ")
                         print(Fore.GREEN)
                         for ind, oc in enumerate(word.occur_list, start=1):
-                            print("     " + str(ind) + ". " + ' '.join(tokens[oc - 5:oc + 6]))
+                            print("     " + str(ind) + ". " + ' '.join(tokens[oc - 5:oc]) +
+                                  Fore.RED + ' ' + tokens[oc] + ' ' + Fore.GREEN +
+                                  ' '.join(tokens[oc + 1:oc + 6]))
                         print(Fore.BLUE)
                         print("Lemma: ")
                         print(Fore.GREEN)
@@ -230,8 +235,8 @@ while True:
                             print("Grau: " + Fore.GREEN + grau_dict.get(word.grau, '') + Fore.BLUE)
                         elif tag == 'ADJ':
                             print("Número: " + Fore.GREEN + numero_dict.get(word.numero, '') + Fore.BLUE)
-                            print("Gênero: " + Fore.GREEN + genero_dict[word.genero] + Fore.BLUE)
-                            print("Grau: " + Fore.GREEN + grau_dict[word.grau] + Fore.BLUE)
+                            print("Gênero: " + Fore.GREEN + genero_dict.get(word.genero, '') + Fore.BLUE)
+                            print("Grau: " + Fore.GREEN + grau_dict.get(word.grau, '') + Fore.BLUE)
                         elif tag == 'VERB':
                             print(Fore.GREEN)
                             if word.pessoa == 'i' and word.numero == 'i' and word.tempo == 'i':
@@ -249,9 +254,9 @@ while True:
                                 print("Número: " + Fore.GREEN + numero_dict.get(word.numero, '') + Fore.BLUE)
                                 print("Tempo: " + Fore.GREEN + tempo_dict.get(word.tempo, '') + Fore.BLUE)
                         elif tag == 'PRON':
-                            print("Número: " + Fore.GREEN + numero_dict[word.numero] + Fore.BLUE)
+                            print("Número: " + Fore.GREEN + numero_dict.get(word.numero, '') + Fore.BLUE)
                             print("Pessoa: " + Fore.GREEN + word.pessoa + "ª" + Fore.BLUE)
-                            print("Gênero: " + Fore.GREEN + genero_dict[word.genero] + Fore.BLUE)
+                            print("Gênero: " + Fore.GREEN + genero_dict.get(word.genero, '') + Fore.BLUE)
                         print(Style.RESET_ALL)
                         print("----------------------------------------------------------------")
                         continue
